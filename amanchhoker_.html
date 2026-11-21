@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Aman Chhoker</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='black'/><rect y='30' width='100' height='40' fill='%23e9a23b'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--lb:50vh;--ink:#ece6da;--am:#e9a23b;--pad:clamp(1rem,4vw,4rem);--f:"Cormorant Garamond",Georgia,serif;--s:"Jost",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{background:#050505}
+body{background:#050505;color:var(--ink);font:300 1.05rem/1.6 var(--s);overflow-x:hidden}
+body.lock{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--am);outline-offset:3px}
+/* the whole site is seen through a widescreen window */
+.bar{position:fixed;left:0;right:0;height:var(--lb);background:#000;z-index:70;transition:height .9s cubic-bezier(.7,0,.2,1)}
+.bar.t{top:0}.bar.b{bottom:0}
+#vg{position:fixed;inset:0;z-index:64;pointer-events:none;background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.6))}
+#gr{position:fixed;inset:-60%;z-index:65;pointer-events:none;opacity:.1;animation:gr .6s steps(6) infinite;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes gr{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-6%,-2%)}80%{transform:translate(5%,4%)}100%{transform:translate(0,0)}}
+header{position:fixed;inset:0 0 auto;height:7vh;z-index:71;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:0 var(--pad);font-size:.75rem;letter-spacing:.32em;text-transform:uppercase;font-weight:400}
+header a:hover{color:var(--am)}
+@media(max-width:520px){header{font-size:.62rem;letter-spacing:.18em}}
+#ld{position:fixed;inset:0;z-index:72;display:grid;place-items:center;font-size:.8rem;letter-spacing:.6em;text-transform:uppercase;transition:opacity .8s}
+#ld.out{opacity:0;pointer-events:none}
+/* hero / title card */
+.hero{position:relative;height:100svh;min-height:520px;overflow:hidden;background:#000}
+.sl,.md{position:absolute;inset:0}
+.sl,.hero>.md{inset:7vh auto 7vh 50%;aspect-ratio:9/16;transform:translateX(-50%);overflow:hidden;box-shadow:0 0 180px color-mix(in srgb,var(--am) 22%,transparent)}
+.sl{opacity:0;transition:opacity 1.8s}.sl.on{opacity:1}
+.sl video,.sl img,.md video,.md img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.12) saturate(.85) brightness(.75)}
+.sl.on>*{animation:kb 9s linear forwards}
+.hero>.md>*{animation:kb 20s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.15)}}
+.grade{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(0,80,100,.4),rgba(255,130,30,.2));mix-blend-mode:soft-light;pointer-events:none}
+.ttlc{position:absolute;inset:0;z-index:3;display:grid;place-items:center;text-align:center;padding:7vh var(--pad)}
+.t1{font:300 min(8vw,10rem)/1.05 var(--f);letter-spacing:.2em;text-indent:.2em;text-transform:uppercase;text-wrap:balance;opacity:0;animation:tin 3.2s cubic-bezier(.2,.7,.2,1) .2s forwards paused}
+body.go .t1,body.go .sb{animation-play-state:running}
+@keyframes tin{from{opacity:0;letter-spacing:.7em;filter:blur(14px)}to{opacity:1;letter-spacing:.2em;filter:none}}
+.sb{margin-top:1.6rem;font-size:.8rem;letter-spacing:.55em;text-indent:.55em;text-transform:uppercase;opacity:0;animation:fin 2s ease 2s forwards paused}
+@keyframes fin{to{opacity:.85}}
+.cap{position:absolute;z-index:3;left:10%;right:10%;bottom:calc(7vh + 2.6rem);text-align:center;font:400 clamp(.95rem,1.7vw,1.35rem)/1.4 var(--s);text-shadow:0 0 8px #000,0 1px 3px #000;transition:opacity .6s;min-height:1.4em}
+.tc{position:absolute;z-index:3;left:var(--pad);bottom:calc(7vh + 1rem);font:400 .7rem var(--s);letter-spacing:.2em;color:var(--am);font-variant-numeric:tabular-nums}
+.cue{position:absolute;z-index:3;right:var(--pad);bottom:calc(7vh + 1rem);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;opacity:.7}
+/* chapters as widescreen frames */
+.chs{padding:14vh var(--pad) 6vh}
+.intro{font:italic 300 clamp(1.6rem,3.6vw,3.2rem)/1.2 var(--f);text-align:center;max-width:22ch;margin:0 auto 12vh}
+.frs{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;align-items:start}
+.fr{display:block;position:relative;aspect-ratio:2/3;overflow:hidden;background:#0d0d0d}.fr:nth-child(3n+2){margin-top:9vh}
+.fr .md>*{transition:transform 1.8s cubic-bezier(.2,.8,.2,1)}
+.fr:hover .md>*{transform:scale(1.07)}
+.fr:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75),transparent 55%)}
+.lab{position:absolute;left:6%;bottom:8%;z-index:3;max-width:90%}
+.lab small{font-size:.72rem;letter-spacing:.45em;text-transform:uppercase;color:var(--am)}
+.lab h2{font:300 clamp(1.4rem,2.5vw,2.8rem)/1.1 var(--f);letter-spacing:.08em;text-transform:uppercase;transition:letter-spacing 1s cubic-bezier(.2,.8,.2,1)}
+.fr:hover h2{letter-spacing:.13em}
+.lab p{max-width:36ch;opacity:.85;margin-top:.5rem}
+.mt{position:absolute;right:6%;top:8%;z-index:3;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase}
+@media(max-width:900px){.frs{grid-template-columns:repeat(2,1fr)}.fr:nth-child(3n+2){margin-top:0}.fr:nth-child(even){margin-top:6vh}}@media(max-width:520px){.lab p{display:none}.lab h2{font-size:1.2rem}}
+.end{padding:16vh var(--pad) calc(7vh + 9vh);text-align:center}
+.end small{display:block;font-size:.72rem;letter-spacing:.5em;text-transform:uppercase;opacity:.6;margin-top:2.6rem}
+.end b{display:block;font:300 clamp(1.6rem,4vw,3.4rem)/1.2 var(--f);letter-spacing:.2em;text-transform:uppercase;font-weight:300}
+/* scenes */
+.sc{font:italic 300 clamp(1.8rem,4vw,3.4rem) var(--f);text-align:center;padding:12vh 0 5vh;scroll-margin-top:7vh}.sc span{opacity:.55}
+.pg{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:8vh var(--pad) 0;font-size:.75rem;letter-spacing:.35em;text-transform:uppercase}
+.pg div{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center}
+.pg div a,.pg div i{display:grid;place-items:center;min-width:2.4rem;height:2.4rem;border:1px solid rgba(236,230,218,.25);border-radius:50%;letter-spacing:0;font-style:normal;transition:background .3s,color .3s}
+.pg div i{border:0}
+.pg a:hover{color:var(--am)}.pg div a.on{background:var(--ink);color:#000;border-color:var(--ink)}
+.pg>a,.pg>span{min-width:6rem}.pg>a:last-child{text-align:right}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(150px,22vw,300px),1fr));gap:.5rem;padding:0 .5rem}
+.it{aspect-ratio:2/3;position:relative;overflow:hidden;background:#111;cursor:pointer}
+.it video,.it img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.1) saturate(.85) brightness(.8);transition:filter .6s,transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.it:hover video,.it:hover img{filter:none;transform:scale(1.05)}
+.it figcaption{position:absolute;left:.6rem;bottom:.5rem;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--am);text-shadow:0 0 6px #000}
+#e0{padding:5rem var(--pad);font:italic 300 1.6rem var(--f);text-align:center}
+.nx{display:block;text-align:center;padding:12vh var(--pad) calc(7vh + 10vh)}
+.nx small{font-size:.72rem;letter-spacing:.5em;text-transform:uppercase;color:var(--am)}
+.nx b{display:block;font:300 clamp(2rem,6.5vw,7rem)/1.1 var(--f);letter-spacing:.1em;text-transform:uppercase;margin-top:1rem;transition:letter-spacing 1s cubic-bezier(.2,.8,.2,1)}
+.nx:hover b{letter-spacing:.2em}
+.nx.ft{padding-top:4vh;padding-bottom:6vh}
+.vw{position:fixed;inset:0;z-index:80;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center}
+.vw.on{display:flex}
+.vw video,.vw img{height:84vh;max-width:94vw;aspect-ratio:9/16;object-fit:cover}
+.vw .cap2{margin-top:1rem;font-size:.72rem;letter-spacing:.35em;text-transform:uppercase;color:var(--am)}
+.vw button{position:absolute;font-size:2.2rem;padding:1rem;line-height:1}
+.vx{top:calc(env(safe-area-inset-top,0px) + .2rem);right:.5rem}
+.vp,.vn{top:50%;transform:translateY(-50%)}
+.vp{left:.3rem}.vn{right:.3rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.t1,.sb{opacity:1}#gr{display:none}}
+/* ===== CINEMATIC PASS ===== */
+#fl{position:fixed;inset:0;z-index:66;pointer-events:none;background:#fff;mix-blend-mode:overlay;opacity:0;animation:fk 5s steps(1) infinite}
+@keyframes fk{0%{opacity:.02}7%{opacity:.08}9%{opacity:.01}31%{opacity:.05}33%{opacity:.015}58%{opacity:.09}60%{opacity:.02}85%{opacity:.05}87%{opacity:.01}}
+#lk{position:fixed;inset:0;z-index:66;pointer-events:none;mix-blend-mode:screen;opacity:0;background:radial-gradient(60% 80% at 0% 40%,rgba(255,110,40,.55),transparent 70%),radial-gradient(50% 70% at 100% 70%,rgba(255,60,120,.35),transparent 70%);animation:lk 18s ease-in-out infinite}
+@keyframes lk{0%,100%{opacity:0;transform:translateX(-4%)}45%{opacity:.3}55%{opacity:.5;transform:translateX(3%)}72%{opacity:0}}
+#sr{position:fixed;top:0;bottom:0;left:0;width:1px;z-index:66;pointer-events:none;opacity:0;background:linear-gradient(transparent,rgba(255,255,255,.4) 20%,rgba(255,255,255,.2) 80%,transparent);animation:scr 6s steps(1) infinite}
+@keyframes scr{0%{opacity:0}10%{left:12%;opacity:.5}11%{opacity:0}40%{left:73%;opacity:.4}41%{opacity:0}69%{left:41%;opacity:.5}70%{opacity:0}88%{left:90%;opacity:.35}89%{opacity:0}}
+#vg{background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.72))}
+#ld{background:#000}
+#ld div{text-align:center}
+#ld small{display:block;font-size:.62rem;letter-spacing:.7em;text-indent:.7em;margin-bottom:1.2rem;opacity:0;animation:fin 1s ease .3s forwards}
+#ld b{display:block;font-weight:300;text-indent:.6em;opacity:0;animation:fin 1s ease .8s forwards}
+#ld i{display:block;height:1px;width:0;margin:1.6rem auto 0;background:var(--am);animation:ldl 1.7s cubic-bezier(.6,0,.2,1) .2s forwards}
+@keyframes ldl{to{width:min(60vw,320px)}}
+#tt{position:fixed;inset:0;z-index:73;display:grid;place-items:center;text-align:center;pointer-events:none;opacity:0;transition:opacity .45s ease}
+#tt.on{opacity:1;transition-delay:.35s}
+#tt small{display:block;font-size:.72rem;letter-spacing:.6em;text-indent:.6em;text-transform:uppercase;color:var(--am);margin-bottom:1rem}
+#tt b{display:block;font:300 clamp(1.8rem,6vw,5rem)/1.1 var(--f);letter-spacing:.5em;text-indent:.5em;text-transform:uppercase;transition:letter-spacing 2.2s cubic-bezier(.2,.8,.2,1)}
+#tt.on b{letter-spacing:.22em}
+.vf{position:absolute;inset:calc(7vh + .6rem) calc(var(--pad) - .5rem);z-index:3;pointer-events:none}
+.vf i{position:absolute;width:26px;height:26px;border:0 solid rgba(236,230,218,.55)}
+.vf i:nth-child(1){left:0;top:0;border-width:1px 0 0 1px}
+.vf i:nth-child(2){right:0;top:0;border-width:1px 1px 0 0}
+.vf i:nth-child(3){left:0;bottom:0;border-width:0 0 1px 1px}
+.vf i:nth-child(4){right:0;bottom:0;border-width:0 1px 1px 0}
+.rec,.mi{position:absolute;z-index:3;top:calc(7vh + 1.7rem);font-size:.66rem;letter-spacing:.35em;text-transform:uppercase;opacity:.85}
+.rec{left:calc(var(--pad) + .3rem);display:flex;align-items:center;gap:.7rem}
+.rec b{width:9px;height:9px;border-radius:50%;background:#ff3b2f;box-shadow:0 0 12px #ff3b2f;animation:blk 1.6s steps(1) infinite}
+@keyframes blk{50%{opacity:0}}
+.mi{right:calc(var(--pad) + .3rem);text-align:right;max-width:50vw}
+.cue.s:after{content:"";display:block;width:1px;height:42px;background:var(--ink);margin:.7rem auto 0;transform-origin:top;animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(0);opacity:1}60%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);opacity:0}}
+.t1{text-shadow:-2px 0 rgba(255,60,60,.28),2px 0 rgba(60,200,255,.28)}
+.ttlc>div{position:relative;transform:translateY(calc(var(--p,0)*-12vh));opacity:calc(1 - var(--p,0)*1.5)}
+.ttlc>div:after{content:"";position:absolute;left:50%;top:50%;width:140vw;height:2px;pointer-events:none;mix-blend-mode:screen;opacity:0;transform:translate(-50%,-50%) scaleX(0);background:linear-gradient(90deg,transparent,rgba(140,200,255,.9) 50%,transparent);box-shadow:0 0 32px 6px rgba(80,160,255,.35);animation:flare 3.6s cubic-bezier(.2,.7,.2,1) 1s forwards paused}
+body.go .ttlc>div:after{animation-play-state:running}
+@keyframes flare{0%{opacity:0;transform:translate(-50%,-50%) scaleX(0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scaleX(1)}}
+.sl,.hero>.md{transform:translateX(-50%) translateY(calc(var(--p,0)*7vh))}
+.hero:after{content:"";position:absolute;inset:0;z-index:4;background:#000;opacity:calc(var(--p,0)*.92);pointer-events:none}
+.rv{opacity:0;transform:translateY(40px) scale(.98);filter:blur(6px);transition:opacity 1.2s ease var(--d,0s),transform 1.4s cubic-bezier(.2,.8,.2,1) var(--d,0s),filter 1.2s ease var(--d,0s)}
+.rv.in{opacity:1;transform:none;filter:none}
+.cr{margin:0 auto 10vh}
+.cr p{margin-bottom:2rem}
+.cr span{display:block;font-size:.66rem;letter-spacing:.5em;text-indent:.5em;text-transform:uppercase;opacity:.5}
+.cr b{font-size:clamp(1.2rem,2.6vw,2.2rem);letter-spacing:.25em;margin-top:.3rem}
+.end .big{margin-top:6vh}
+body.film:before,body.film:after{content:"";position:fixed;top:7vh;bottom:7vh;width:9px;z-index:63;pointer-events:none;opacity:.8;background:repeating-linear-gradient(180deg,transparent 0 12px,rgba(236,230,218,.16) 12px 26px,transparent 26px 38px)}
+body.film:before{left:.4rem}body.film:after{right:.4rem}
+.film .grid{padding:0 1.6rem}
+@media(max-width:700px){body.film:before,body.film:after{display:none}.film .grid{padding:0 .5rem}}
+#cur{position:fixed;left:0;top:0;z-index:90;width:34px;height:34px;border:1px solid var(--am);border-radius:50%;display:none;place-items:center;pointer-events:none;opacity:0;font-size:.6rem;letter-spacing:.25em;text-indent:.25em;text-transform:uppercase;color:#000;transition:width .5s cubic-bezier(.2,.8,.2,1),height .5s cubic-bezier(.2,.8,.2,1),background .4s,opacity .3s}
+#cur.v{opacity:1}
+#cur.big{width:92px;height:92px;background:var(--am)}
+@media(pointer:fine){#cur{display:grid}}
+.vw{background:radial-gradient(ellipse at center,#161616,#000 72%)}
+.vw.on video,.vw.on img{animation:vin .7s cubic-bezier(.2,.8,.2,1)}
+@keyframes vin{from{opacity:0;transform:scale(.94);filter:blur(10px)}}
+
+/* ===== FEATURE PAGE (one big video) ===== */
+.feat{padding:calc(7vh + 7vh) var(--pad) 4vh;text-align:center;min-height:100svh}
+.feat .t1{font-size:min(7vw,6rem)}
+.feat .sb{margin:1.2rem 0 6vh}
+.pl{position:relative;width:min(100%,1500px);margin:0 auto;background:#000;border:1px solid rgba(236,230,218,.12);box-shadow:0 0 180px color-mix(in srgb,var(--am) 22%,transparent)}
+.pl video{display:block;width:100%;aspect-ratio:16/9;max-height:calc(100svh - 24vh);object-fit:contain;background:#000}
+.pb{position:absolute;inset:0;z-index:2;display:grid;place-items:center;transition:opacity .5s;cursor:pointer}
+.pb.off{opacity:0;pointer-events:none}
+.pb i{display:grid;place-items:center;width:clamp(70px,9vw,120px);aspect-ratio:1;border:1px solid var(--am);border-radius:50%;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);transition:transform .5s cubic-bezier(.2,.8,.2,1),background .4s}
+.pb i:before{content:"";margin-left:8%;border-style:solid;border-width:.9rem 0 .9rem 1.5rem;border-color:transparent transparent transparent var(--am)}
+.pb:hover i{transform:scale(1.08);background:rgba(0,0,0,.7)}
+.feat .syn{max-width:52ch;margin:5vh auto 0;font:italic 300 clamp(1.2rem,2.2vw,1.8rem)/1.4 var(--f);opacity:.85}
+.feat .meta{margin-top:1.4rem;font-size:.68rem;letter-spacing:.4em;text-transform:uppercase;color:var(--am)}
+#e1{display:none;padding:6rem var(--pad);font:italic 300 1.6rem var(--f)}
+.feat.miss .pl,.feat.miss .syn,.feat.miss .meta{display:none}
+.feat.miss #e1{display:block}
+.fbtn{display:inline-block;margin-top:1.6rem;padding:.8rem 1.6rem;border:1px solid rgba(236,230,218,.3);font-size:.7rem;letter-spacing:.35em;text-transform:uppercase;transition:background .3s,color .3s}
+.fbtn:hover{background:var(--ink);color:#000}
+
+/* ===== BACKGROUND MUSIC PLAYER ===== */
+.player{position:fixed;bottom:calc(7vh + 1rem);right:calc(var(--pad) - .2rem);z-index:75;display:flex;align-items:center;gap:.8rem;padding:.55rem 1.1rem;background:rgba(10,10,10,.8);backdrop-filter:blur(6px);border:1px solid rgba(236,230,218,.16);border-left:3px solid var(--am);opacity:0;animation:pup .6s 2.6s forwards}
+@keyframes pup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.player-btn{display:grid;place-items:center;width:1.4rem;height:1.4rem;color:var(--am);font-size:.8rem;line-height:1;transition:transform .2s}
+.player-btn:hover{transform:scale(1.2)}
+.player-label{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;opacity:.7}
+.player-bars{display:flex;align-items:center;gap:2px;height:12px}
+.player-bars span{width:2px;height:4px;background:var(--am);border-radius:1px}
+.player.playing .player-bars span{animation:bb .9s ease-in-out infinite}
+.player-bars span:nth-child(2){animation-delay:.15s}.player-bars span:nth-child(3){animation-delay:.3s}
+@keyframes bb{0%,100%{height:4px}50%{height:12px}}
+@media(max-width:520px){.player{right:.8rem;padding:.45rem .8rem}.player-label{display:none}}
+
+@media(prefers-reduced-motion:reduce){.rv{opacity:1!important;transform:none!important;filter:none!important}#fl,#lk,#sr,#cur{display:none!important}#ld small,#ld b{opacity:1}#ld i{width:min(60vw,320px)}.rec b{opacity:1}}
+</style>
+</head>
+<body>
+<div class="bar t"></div><div class="bar b"></div><div id="vg"></div><div id="gr"></div><div id="fl"></div><div id="lk"></div><div id="sr"></div><div id="cur"></div><div id="tt"></div>
+<header><a href="#" id="hl">Aman Chhoker</a><a href="#film" id="hm">Collage Video</a><a href="#idx" id="hr">Chapters</a></header>
+<div id="ld">Aman Chhoker</div>
+<div id="app"></div>
+<div class="vw" id="vw" role="dialog" aria-modal="true" aria-label="Viewer">
+ <button class="vx" id="vx" aria-label="Close">✕</button>
+ <button class="vp" id="vp" aria-label="Previous">‹</button>
+ <button class="vn" id="vn" aria-label="Next">›</button>
+ <div id="st"></div><div class="cap2" id="cap2"></div>
+</div>
+
+<div class="player" id="player">
+ <button class="player-btn" id="playBtn" aria-label="Play or pause music"><span id="playIcon">▶</span></button>
+ <span class="player-label">Theme</span>
+ <div class="player-bars"><span></span><span></span><span></span></div>
+ <audio id="bgAudio" loop preload="auto" src="wayup.mp3"></audio>
+</div>
+
+<script>
+/* ===== EDIT HERE ===== */
+const PROJECT={title:"Aman Chhoker",sub:"a film in six chapters",student:"Aman Chhoker",studio:"Studio Project 01"};
+
+const FEATURE={
+ file:"Aman Chhoker.m4v",
+ poster:"amanchhoker_623.jpg",
+ title:"The Collage",
+ sub:"The full story, one long take",
+ syn:"Everything in one place. Press play, turn the sound up.",
+ meta:"The collage video",
+ c:"#ffffff"
+};
+
+const G=[
+ {id:"homerun",c:"#ff3b2f",t:"Aman Chhoker",syn:"Caps, gowns and a long-awaited flight back. The biggest moments, all in one place.",
+ /* VIDEOS: one file name per entry. Add or remove names here. Use "Videos/name.mp4" if they are in a subfolder */
+ videos:[
+  "amanchhoker_01.mp4","amanchhoker_02.mp4","amanchhoker_03.mp4","amanchhoker_04.mp4","amanchhoker_09.mp4",
+  "amanchhoker_11.mp4","amanchhoker_12.mp4","amanchhoker_13.mp4","amanchhoker_14.mp4","amanchhoker_15.mp4",
+  "amanchhoker_16.mp4","amanchhoker_17.mp4","amanchhoker_26.mp4","amanchhoker_27.mp4","amanchhoker_29.mp4",
+  "amanchhoker_30.mp4","amanchhoker_31.mp4","amanchhoker_32.mp4","amanchhoker_37.mp4","amanchhoker_47.mp4",
+  "amanchhoker_48.mp4","amanchhoker_49.mp4","amanchhoker_50.mp4","amanchhoker_51.mp4","amanchhoker_52.mp4",
+  "amanchhoker_57.mp4","amanchhoker_58.mp4","amanchhoker_61.mp4","amanchhoker_62.mp4","amanchhoker_65.mp4",
+  "amanchhoker_67.mp4","amanchhoker_69.mp4","amanchhoker_70.mp4","amanchhoker_71.mp4","amanchhoker_72.mp4",
+  "amanchhoker_73.mp4","amanchhoker_74.mp4","amanchhoker_75.mp4","amanchhoker_76.mp4","amanchhoker_77.mp4",
+  "amanchhoker_78.mp4","amanchhoker_79.mp4","amanchhoker_80.mp4","amanchhoker_81.mp4","amanchhoker_82.mp4",
+  "amanchhoker_83.mp4","amanchhoker_84.mp4","amanchhoker_85.mp4","amanchhoker_86.mp4","amanchhoker_87.mp4",
+  "amanchhoker_88.mp4","amanchhoker_89.mp4","amanchhoker_96.mp4","amanchhoker_97.mp4","amanchhoker_98.mp4",
+  "amanchhoker_99.mp4","amanchhoker_100.mp4","amanchhoker_101.mp4","amanchhoker_102.mp4","amanchhoker_109.mp4",
+  "amanchhoker_110.mp4","amanchhoker_111.mp4","amanchhoker_112.mp4","amanchhoker_113.mp4","amanchhoker_114.mp4",
+  "amanchhoker_115.mp4","amanchhoker_116.mp4","amanchhoker_117.mp4","amanchhoker_118.mp4","amanchhoker_119.mp4",
+  "amanchhoker_120.mp4","amanchhoker_121.mp4","amanchhoker_122.mp4","amanchhoker_123.mp4","amanchhoker_124.mp4",
+  "amanchhoker_125.mp4","amanchhoker_126.mp4","amanchhoker_127.mp4","amanchhoker_128.mp4","amanchhoker_129.mp4",
+  "amanchhoker_130.mp4","amanchhoker_131.mp4","amanchhoker_132.mp4","amanchhoker_133.mp4","amanchhoker_134.mp4",
+  "amanchhoker_135.mp4","amanchhoker_136.mp4","amanchhoker_137.mp4",
+ ],
+ /* PHOTOS: one file name per entry */
+ photos:[
+  "amanchhoker_05.jpg","amanchhoker_06.jpg","amanchhoker_07.jpg","amanchhoker_08.jpg","amanchhoker_10.jpg",
+  "amanchhoker_18.jpg","amanchhoker_19.jpg","amanchhoker_20.jpg","amanchhoker_21.jpg","amanchhoker_22.jpg",
+  "amanchhoker_23.jpg","amanchhoker_24.jpg","amanchhoker_25.jpg","amanchhoker_28.jpg","amanchhoker_33.jpg",
+  "amanchhoker_34.jpg","amanchhoker_35.jpg","amanchhoker_36.jpg","amanchhoker_38.jpg","amanchhoker_39.jpg",
+  "amanchhoker_40.jpg","amanchhoker_41.jpg","amanchhoker_42.jpg","amanchhoker_43.jpg","amanchhoker_44.jpg",
+  "amanchhoker_45.jpg","amanchhoker_46.jpg","amanchhoker_53.jpg","amanchhoker_54.jpg","amanchhoker_55.jpg",
+  "amanchhoker_56.jpg","amanchhoker_59.jpg","amanchhoker_60.jpg","amanchhoker_63.jpg","amanchhoker_64.jpg",
+  "amanchhoker_66.jpg","amanchhoker_90.jpg","amanchhoker_91.jpg","amanchhoker_92.jpg",
+  "amanchhoker_93.jpg","amanchhoker_94.jpg","amanchhoker_103.jpg","amanchhoker_104.jpg",
+  "amanchhoker_105.jpg","amanchhoker_106.jpg","amanchhoker_107.jpg","amanchhoker_108.jpg",
+ ]},
+ {id:"kiwi",c:"#c4ee4a",t:"Kiwi Chronicles",syn:"Visas, new habits and long drives. Learning a new city one clip at a time.",
+ videos:[
+  "amanchhoker_143.mp4","amanchhoker_144.mp4","amanchhoker_145.mp4","amanchhoker_146.mp4","amanchhoker_147.mp4",
+  "amanchhoker_148.mp4","amanchhoker_151.mp4","amanchhoker_152.mp4","amanchhoker_153.mp4","amanchhoker_154.mp4",
+  "amanchhoker_155.mp4","amanchhoker_156.mp4","amanchhoker_157.mp4","amanchhoker_167.mp4","amanchhoker_169.mp4",
+  "amanchhoker_174.mp4","amanchhoker_175.mp4","amanchhoker_176.mp4","amanchhoker_183.mp4","amanchhoker_184.mp4",
+  "amanchhoker_185.mp4","amanchhoker_186.mp4","amanchhoker_187.mp4","amanchhoker_189.mp4","amanchhoker_190.mp4",
+  "amanchhoker_192.mp4","amanchhoker_193.mp4","amanchhoker_194.mp4","amanchhoker_204.mp4","amanchhoker_210.mp4",
+  "amanchhoker_216.mp4","amanchhoker_217.mp4","amanchhoker_218.mp4","amanchhoker_219.mp4","amanchhoker_220.mp4",
+  "amanchhoker_221.mp4","amanchhoker_222.mp4","amanchhoker_223.mp4","amanchhoker_230.mp4","amanchhoker_231.mp4",
+  "amanchhoker_238.mp4","amanchhoker_239.mp4","amanchhoker_240.mp4","amanchhoker_241.mp4","amanchhoker_242.mp4",
+  "amanchhoker_243.mp4","amanchhoker_244.mp4","amanchhoker_251.mp4","amanchhoker_252.mp4","amanchhoker_253.mp4",
+  "amanchhoker_254.mp4","amanchhoker_263.mp4","amanchhoker_264.mp4","amanchhoker_265.mp4","amanchhoker_266.mp4",
+  "amanchhoker_267.mp4","amanchhoker_268.mp4","amanchhoker_269.mp4","amanchhoker_270.mp4","amanchhoker_277.mp4",
+  "amanchhoker_278.mp4","amanchhoker_279.mp4","amanchhoker_280.mp4","amanchhoker_281.mp4","amanchhoker_282.mp4",
+  "amanchhoker_288.mp4","amanchhoker_289.mp4","amanchhoker_290.mp4","amanchhoker_295.mp4","amanchhoker_296.mp4",
+  "amanchhoker_302.mp4","amanchhoker_303.mp4","amanchhoker_304.mp4","amanchhoker_306.mp4","amanchhoker_314.mp4",
+  "amanchhoker_315.mp4",
+ ],
+ photos:[
+  "amanchhoker_138.jpg","amanchhoker_139.jpg","amanchhoker_140.jpg","amanchhoker_141.jpg","amanchhoker_142.jpg",
+  "amanchhoker_149.jpg","amanchhoker_150.jpg","amanchhoker_158.jpg","amanchhoker_159.jpg","amanchhoker_160.jpg",
+  "amanchhoker_161.jpg","amanchhoker_162.jpg","amanchhoker_163.jpg","amanchhoker_164.jpg","amanchhoker_165.jpg",
+  "amanchhoker_166.jpg","amanchhoker_168.jpg","amanchhoker_170.jpg","amanchhoker_171.jpg","amanchhoker_172.jpg",
+  "amanchhoker_173.jpg","amanchhoker_177.jpg","amanchhoker_178.jpg","amanchhoker_179.jpg","amanchhoker_180.jpg",
+  "amanchhoker_181.jpg","amanchhoker_182.jpg","amanchhoker_188.jpg","amanchhoker_191.jpg","amanchhoker_195.jpg",
+  "amanchhoker_196.jpg","amanchhoker_197.jpg","amanchhoker_198.jpg","amanchhoker_199.jpg","amanchhoker_200.jpg",
+  "amanchhoker_201.jpg","amanchhoker_202.jpg","amanchhoker_203.jpg","amanchhoker_205.jpg","amanchhoker_206.jpg",
+  "amanchhoker_207.jpg","amanchhoker_208.jpg","amanchhoker_212.jpg",
+  "amanchhoker_213.jpg","amanchhoker_214.jpg","amanchhoker_215.jpg","amanchhoker_224.jpg","amanchhoker_225.jpg",
+  "amanchhoker_226.jpg","amanchhoker_227.jpg","amanchhoker_228.jpg","amanchhoker_229.jpg","amanchhoker_232.jpg",
+  "amanchhoker_233.jpg","amanchhoker_234.jpg","amanchhoker_235.jpg","amanchhoker_236.jpg","amanchhoker_237.jpg",
+  "amanchhoker_245.jpg","amanchhoker_246.jpg","amanchhoker_247.jpg","amanchhoker_248.jpg",
+  "amanchhoker_255.jpg","amanchhoker_256.jpg","amanchhoker_257.jpg","amanchhoker_258.jpg",
+  "amanchhoker_259.jpg","amanchhoker_260.jpg","amanchhoker_262.jpg","amanchhoker_271.jpg",
+  "amanchhoker_272.jpg","amanchhoker_273.jpg","amanchhoker_274.jpg",
+  "amanchhoker_283.jpg","amanchhoker_284.jpg","amanchhoker_285.jpg","amanchhoker_286.jpg","amanchhoker_287.jpg",
+  "amanchhoker_291.jpg","amanchhoker_292.jpg","amanchhoker_293.jpg","amanchhoker_294.jpg","amanchhoker_297.jpg",
+  "amanchhoker_298.jpg","amanchhoker_299.jpg","amanchhoker_300.jpg","amanchhoker_301.jpg","amanchhoker_305.jpg",
+  "amanchhoker_307.jpg","amanchhoker_308.jpg","amanchhoker_309.jpg","amanchhoker_310.jpg","amanchhoker_311.jpg",
+  "amanchhoker_312.jpg",
+ ]},
+ {id:"southern",c:"#7fd4ff",t:"Southern Stories",syn:"Coastlines, festivals and the little moments in between.",
+ videos:[
+  "amanchhoker_323.mp4","amanchhoker_324.mp4","amanchhoker_331.mp4","amanchhoker_334.mp4","amanchhoker_354.mp4",
+  "amanchhoker_358.mp4","amanchhoker_359.mp4","amanchhoker_368.mp4","amanchhoker_369.mp4","amanchhoker_370.mp4",
+  "amanchhoker_379.mp4","amanchhoker_380.mp4","amanchhoker_381.mp4","amanchhoker_382.mp4","amanchhoker_383.mp4",
+  "amanchhoker_384.mp4","amanchhoker_390.mp4","amanchhoker_391.mp4","amanchhoker_392.mp4","amanchhoker_393.mp4",
+  "amanchhoker_394.mp4","amanchhoker_395.mp4","amanchhoker_400.mp4","amanchhoker_407.mp4","amanchhoker_408.mp4",
+  "amanchhoker_409.mp4","amanchhoker_410.mp4","amanchhoker_411.mp4","amanchhoker_412.mp4","amanchhoker_413.mp4",
+  "amanchhoker_414.mp4","amanchhoker_423.mp4","amanchhoker_429.mp4","amanchhoker_430.mp4","amanchhoker_435.mp4",
+  "amanchhoker_439.mp4","amanchhoker_443.mp4","amanchhoker_450.mp4","amanchhoker_451.mp4","amanchhoker_452.mp4",
+  "amanchhoker_453.mp4","amanchhoker_454.mp4","amanchhoker_455.mp4","amanchhoker_456.mp4","amanchhoker_457.mp4",
+  "amanchhoker_459.mp4","amanchhoker_468.mp4","amanchhoker_469.mp4","amanchhoker_470.mp4","amanchhoker_471.mp4",
+  "amanchhoker_472.mp4","amanchhoker_483.mp4","amanchhoker_484.mp4","amanchhoker_491.mp4","amanchhoker_492.mp4",
+  "amanchhoker_494.mp4","amanchhoker_498.mp4",
+ ],
+ photos:[
+  "amanchhoker_320.jpg",
+  "amanchhoker_321.jpg","amanchhoker_322.jpg","amanchhoker_325.jpg","amanchhoker_326.jpg","amanchhoker_327.jpg",
+  "amanchhoker_328.jpg","amanchhoker_329.jpg","amanchhoker_330.jpg","amanchhoker_332.jpg","amanchhoker_333.jpg",
+  "amanchhoker_335.jpg","amanchhoker_336.jpg","amanchhoker_337.jpg","amanchhoker_338.jpg","amanchhoker_339.jpg",
+  "amanchhoker_340.jpg","amanchhoker_341.jpg","amanchhoker_342.jpg","amanchhoker_343.jpg","amanchhoker_344.jpg",
+  "amanchhoker_349.jpg",
+  "amanchhoker_350.jpg","amanchhoker_351.jpg","amanchhoker_352.jpg","amanchhoker_353.jpg","amanchhoker_355.jpg",
+  "amanchhoker_356.jpg","amanchhoker_357.jpg","amanchhoker_360.jpg","amanchhoker_361.jpg","amanchhoker_362.jpg",
+  "amanchhoker_363.jpg","amanchhoker_364.jpg","amanchhoker_365.jpg","amanchhoker_366.jpg","amanchhoker_367.jpg",
+  "amanchhoker_371.jpg","amanchhoker_372.jpg","amanchhoker_373.jpg","amanchhoker_374.jpg","amanchhoker_375.jpg",
+  "amanchhoker_376.jpg","amanchhoker_377.jpg","amanchhoker_378.jpg","amanchhoker_385.jpg","amanchhoker_386.jpg",
+  "amanchhoker_387.jpg","amanchhoker_388.jpg","amanchhoker_389.jpg","amanchhoker_396.jpg","amanchhoker_397.jpg",
+  "amanchhoker_398.jpg","amanchhoker_399.jpg","amanchhoker_401.jpg","amanchhoker_402.jpg","amanchhoker_403.jpg",
+  "amanchhoker_404.jpg","amanchhoker_405.jpg","amanchhoker_406.jpg","amanchhoker_415.jpg","amanchhoker_416.jpg",
+  "amanchhoker_417.jpg","amanchhoker_418.jpg","amanchhoker_419.jpg","amanchhoker_420.jpg","amanchhoker_421.jpg",
+  "amanchhoker_422.jpg","amanchhoker_424.jpg","amanchhoker_425.jpg","amanchhoker_426.jpg","amanchhoker_427.jpg",
+  "amanchhoker_428.jpg","amanchhoker_431.jpg","amanchhoker_432.jpg","amanchhoker_433.jpg","amanchhoker_434.jpg",
+  "amanchhoker_436.jpg","amanchhoker_437.jpg","amanchhoker_438.jpg","amanchhoker_440.jpg","amanchhoker_441.jpg",
+  "amanchhoker_442.jpg","amanchhoker_444.jpg","amanchhoker_445.jpg","amanchhoker_446.jpg","amanchhoker_447.jpg",
+  "amanchhoker_448.jpg","amanchhoker_449.jpg","amanchhoker_458.jpg","amanchhoker_460.jpg","amanchhoker_461.jpg",
+  "amanchhoker_462.jpg","amanchhoker_463.jpg","amanchhoker_464.jpg","amanchhoker_465.jpg","amanchhoker_466.jpg",
+  "amanchhoker_467.jpg","amanchhoker_473.jpg","amanchhoker_474.jpg","amanchhoker_475.jpg","amanchhoker_476.jpg",
+  "amanchhoker_477.jpg","amanchhoker_478.jpg","amanchhoker_479.jpg","amanchhoker_480.jpg","amanchhoker_481.jpg",
+  "amanchhoker_482.jpg","amanchhoker_485.jpg","amanchhoker_486.jpg","amanchhoker_487.jpg","amanchhoker_488.jpg",
+  "amanchhoker_489.jpg","amanchhoker_490.jpg","amanchhoker_493.jpg","amanchhoker_495.jpg","amanchhoker_496.jpg",
+  "amanchhoker_497.jpg","amanchhoker_499.jpg","amanchhoker_500.jpg","amanchhoker_501.jpg",
+ ]},
+ {id:"grind",c:"#ffa51f",t:"The Grind",syn:"Sweat, discipline and the long road of showing up every single day.",
+ videos:[
+  "amanchhoker_502.mp4","amanchhoker_503.mp4","amanchhoker_504.mp4","amanchhoker_505.mp4","amanchhoker_506.mp4",
+  "amanchhoker_507.mp4","amanchhoker_508.mp4","amanchhoker_509.mp4","amanchhoker_510.mp4","amanchhoker_511.mp4",
+  "amanchhoker_512.mp4","amanchhoker_513.mp4","amanchhoker_514.mp4","amanchhoker_515.mp4","amanchhoker_516.mp4",
+  "amanchhoker_517.mp4","amanchhoker_518.mp4","amanchhoker_519.mp4","amanchhoker_520.mp4","amanchhoker_521.mp4",
+  "amanchhoker_522.mp4","amanchhoker_523.mp4","amanchhoker_524.mp4","amanchhoker_525.mp4","amanchhoker_526.mp4",
+  "amanchhoker_527.mp4","amanchhoker_528.mp4","amanchhoker_531.mp4","amanchhoker_533.mp4","amanchhoker_534.mp4",
+  "amanchhoker_535.mp4","amanchhoker_537.mp4","amanchhoker_538.mp4","amanchhoker_539.mp4","amanchhoker_540.mp4",
+  "amanchhoker_541.mp4","amanchhoker_542.mp4","amanchhoker_548.mp4","amanchhoker_551.mp4","amanchhoker_556.mp4",
+  "amanchhoker_557.mp4","amanchhoker_558.mp4","amanchhoker_561.mp4","amanchhoker_562.mp4","amanchhoker_563.mp4",
+  "amanchhoker_564.mp4","amanchhoker_565.mp4","amanchhoker_568.mp4","amanchhoker_569.mp4","amanchhoker_570.mp4",
+  "amanchhoker_571.mp4","amanchhoker_572.mp4","amanchhoker_574.mp4","amanchhoker_580.mp4","amanchhoker_581.mp4",
+  "amanchhoker_582.mp4","amanchhoker_583.mp4","amanchhoker_584.mp4","amanchhoker_587.mp4","amanchhoker_588.mp4",
+  "amanchhoker_589.mp4","amanchhoker_590.mp4","amanchhoker_591.mp4","amanchhoker_592.mp4","amanchhoker_593.mp4",
+  "amanchhoker_594.mp4","amanchhoker_595.mp4","amanchhoker_596.mp4","amanchhoker_597.mp4","amanchhoker_598.mp4",
+  "amanchhoker_599.mp4","amanchhoker_600.mp4","amanchhoker_601.mp4","amanchhoker_602.mp4","amanchhoker_603.mp4",
+  "amanchhoker_604.mp4","amanchhoker_605.mp4","amanchhoker_606.mp4","amanchhoker_607.mp4","amanchhoker_608.mp4",
+  "amanchhoker_609.mp4","amanchhoker_610.mp4","amanchhoker_611.mp4","amanchhoker_612.mp4","amanchhoker_613.mp4",
+  "amanchhoker_617.mp4","amanchhoker_618.mp4","amanchhoker_620.mp4","amanchhoker_621.mp4","amanchhoker_625.mp4",
+  "amanchhoker_626.mp4","amanchhoker_627.mp4","amanchhoker_628.mp4","amanchhoker_629.mp4","amanchhoker_630.mp4",
+  "amanchhoker_631.mp4","amanchhoker_632.mp4","amanchhoker_633.mp4","amanchhoker_639.mp4","amanchhoker_644.mp4",
+  "amanchhoker_649.mp4","amanchhoker_650.mp4","amanchhoker_654.mp4","amanchhoker_655.mp4","amanchhoker_659.mp4",
+  "amanchhoker_660.mp4","amanchhoker_661.mp4","amanchhoker_665.mp4","amanchhoker_670.mp4","amanchhoker_673.mp4",
+  "amanchhoker_674.mp4","amanchhoker_676.mp4","amanchhoker_677.mp4","amanchhoker_678.mp4","amanchhoker_679.mp4",
+ ],
+ photos:[
+  "amanchhoker_529.jpg","amanchhoker_530.jpg","amanchhoker_532.jpg","amanchhoker_536.jpg","amanchhoker_543.jpg",
+  "amanchhoker_544.jpg","amanchhoker_545.jpg","amanchhoker_546.jpg","amanchhoker_547.jpg","amanchhoker_549.jpg",
+  "amanchhoker_550.jpg","amanchhoker_552.jpg","amanchhoker_553.jpg","amanchhoker_554.jpg","amanchhoker_555.jpg",
+  "amanchhoker_559.jpg","amanchhoker_560.jpg","amanchhoker_566.jpg","amanchhoker_567.jpg","amanchhoker_573.jpg",
+  "amanchhoker_575.jpg","amanchhoker_576.jpg","amanchhoker_577.jpg","amanchhoker_578.jpg","amanchhoker_579.jpg",
+  "amanchhoker_585.jpg","amanchhoker_586.jpg","amanchhoker_614.jpg","amanchhoker_615.jpg","amanchhoker_616.jpg",
+  "amanchhoker_619.jpg","amanchhoker_622.jpg","amanchhoker_623.jpg","amanchhoker_624.jpg","amanchhoker_634.jpg",
+  "amanchhoker_635.jpg","amanchhoker_636.jpg","amanchhoker_637.jpg","amanchhoker_638.jpg","amanchhoker_640.jpg",
+  "amanchhoker_641.jpg","amanchhoker_642.jpg","amanchhoker_643.jpg","amanchhoker_645.jpg","amanchhoker_646.jpg",
+  "amanchhoker_647.jpg","amanchhoker_648.jpg","amanchhoker_651.jpg","amanchhoker_652.jpg","amanchhoker_653.jpg",
+  "amanchhoker_656.jpg","amanchhoker_657.jpg","amanchhoker_658.jpg","amanchhoker_662.jpg","amanchhoker_663.jpg",
+  "amanchhoker_664.jpg","amanchhoker_666.jpg","amanchhoker_667.jpg","amanchhoker_668.jpg","amanchhoker_669.jpg",
+  "amanchhoker_671.jpg","amanchhoker_672.jpg","amanchhoker_675.jpg","amanchhoker_680.jpg",
+ ]},
+ {id:"origins",c:"#ffb3d9",t:"Where It Began",syn:"The early days, simple photos and where the story started.",
+ videos:[
+  "amanchhoker_681.mp4","amanchhoker_685.mp4","amanchhoker_686.mp4","amanchhoker_687.mp4","amanchhoker_688.mp4",
+  "amanchhoker_689.mp4","amanchhoker_690.mp4","amanchhoker_692.mp4","amanchhoker_693.mp4","amanchhoker_694.mp4",
+  "amanchhoker_695.mp4","amanchhoker_696.mp4","amanchhoker_697.mp4","amanchhoker_701.mp4","amanchhoker_702.mp4",
+  "amanchhoker_704.mp4","amanchhoker_705.mp4","amanchhoker_706.mp4","amanchhoker_707.mp4","amanchhoker_708.mp4",
+  "amanchhoker_709.mp4","amanchhoker_718.mp4","amanchhoker_733.mp4","amanchhoker_737.mp4","amanchhoker_744.mp4",
+ ],
+ photos:[
+  "amanchhoker_682.jpg","amanchhoker_683.jpg","amanchhoker_684.jpg","amanchhoker_691.jpg","amanchhoker_698.jpg",
+  "amanchhoker_699.jpg","amanchhoker_700.jpg","amanchhoker_703.jpg","amanchhoker_710.jpg","amanchhoker_711.jpg",
+  "amanchhoker_712.jpg","amanchhoker_713.jpg","amanchhoker_714.jpg","amanchhoker_715.jpg","amanchhoker_716.jpg",
+  "amanchhoker_717.jpg","amanchhoker_719.jpg","amanchhoker_720.jpg","amanchhoker_721.jpg","amanchhoker_722.jpg",
+  "amanchhoker_723.jpg","amanchhoker_724.jpg","amanchhoker_725.jpg","amanchhoker_726.jpg","amanchhoker_727.jpg",
+  "amanchhoker_728.jpg","amanchhoker_729.jpg","amanchhoker_730.jpg","amanchhoker_731.jpg","amanchhoker_732.jpg",
+  "amanchhoker_734.jpg","amanchhoker_735.jpg","amanchhoker_736.jpg","amanchhoker_738.jpg","amanchhoker_739.jpg",
+  "amanchhoker_740.jpg","amanchhoker_742.jpg","amanchhoker_743.jpg","amanchhoker_745.jpg",
+  "amanchhoker_746.jpg","amanchhoker_747.jpg","amanchhoker_748.jpg","amanchhoker_749.jpg","amanchhoker_750.jpg",
+  "amanchhoker_751.jpg","amanchhoker_752.jpg","amanchhoker_753.jpg","amanchhoker_754.jpg","amanchhoker_755.jpg",
+  "amanchhoker_756.jpg",
+ ]},
+ {id:"bonus",c:"#c9b8ff",t:"Bonus Features",syn:"The extras that did not fit anywhere else.",
+ videos:[
+  "amanchhoker_780.mp4",
+ ],
+ photos:[
+  "amanchhoker_757.webp","amanchhoker_758.webp","amanchhoker_759.webp","amanchhoker_760.webp","amanchhoker_761.webp",
+  "amanchhoker_762.webp","amanchhoker_763.webp","amanchhoker_764.webp","amanchhoker_765.webp","amanchhoker_766.webp",
+  "amanchhoker_767.webp","amanchhoker_768.webp","amanchhoker_769.webp","amanchhoker_770.webp","amanchhoker_771.webp",
+  "amanchhoker_772.webp","amanchhoker_773.webp","amanchhoker_774.webp","amanchhoker_775.webp","amanchhoker_776.webp",
+  "amanchhoker_777.webp","amanchhoker_778.webp","amanchhoker_779.webp","amanchhoker_781.jpg","amanchhoker_782.jpg",
+  "amanchhoker_783.jpg","amanchhoker_784.jpg","amanchhoker_785.jpg","amanchhoker_786.jpg","amanchhoker_787.jpg",
+  "amanchhoker_788.jpg",
+ ]}
+];
+/* ===== END EDIT ===== */
+G.forEach(g=>{g.vids=g.videos;g.pics=g.photos});
+const $=id=>document.getElementById(id);
+const enc=s=>s.split("/").map(encodeURIComponent).join("/");
+const num=s=>(s.match(/_(\d+)/)||[])[1]||"";
+const RO=["I","II","III","IV","V","VI","VII","VIII"];
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+const pool=[],ok={};let onHome=false,tok=0,mt=0,last=null,k=0,GRID=null,t0=performance.now(),PG=1,TP=1,CID="";
+const setLB=v=>document.body.style.setProperty("--lb",v);
+
+/* quietly find a few files that really exist: they feed the montage and chapter posters */
+function add(it){pool.push(it);ok[it.id][it.t==="vid"?"v":"p"].push(it);paint();if(onHome&&!mt)nextShot()}
+G.forEach(g=>{ok[g.id]={v:[],p:[]};
+ [0,.45,.9].forEach(f=>{const s=g.pics[Math.floor(f*g.pics.length)];if(!s)return;const i=new Image();i.onload=()=>add({t:"img",s:enc(s),id:g.id});i.src=enc(s)});
+ [0,.5].forEach(f=>{const s=g.vids[Math.floor(f*g.vids.length)];if(!s)return;const v=document.createElement("video");v.muted=true;v.preload="metadata";v.onloadedmetadata=()=>add({t:"vid",s:enc(s),id:g.id,d:v.duration});v.src=enc(s)})});
+
+function paint(){
+ document.querySelectorAll(".md[data-id]").forEach(m=>{const o=ok[m.dataset.id],it=o&&(o.v[0]||o.p[0]);if(!it||m.dataset.f===it.s)return;m.dataset.f=it.s;
+  m.innerHTML=it.t==="vid"?`<video muted loop playsinline autoplay src="${it.s}"></video>`:`<img alt="" src="${it.s}">`;
+  const v=m.querySelector("video");if(v)v.play().catch(()=>{})});
+}
+
+/* title-sequence montage: crossfades through your clips, captions follow the chapter */
+function nextShot(){
+ if(!onHome){mt=0;return}mt=1;const my=tok;
+ const vids=pool.filter(x=>x.t==="vid"),src=vids.length?vids:pool;if(!src.length){mt=0;return}
+ let it=src[Math.floor(Math.random()*src.length)];if(src.length>1&&it===last)it=src[(src.indexOf(it)+1)%src.length];last=it;
+ const sl=[$("s0"),$("s1")][k^=1],old=[$("s0"),$("s1")][k^1];if(!sl)return;
+ const v=sl.querySelector("video"),im=sl.querySelector("img");
+ const go=()=>{if(my!==tok)return;old.classList.remove("on");sl.classList.add("on");
+  const g=G.find(x=>x.id===it.id),mi=$("mi");if(mi)mi.textContent="Ch. "+RO[G.indexOf(g)]+" · "+g.t;$("cap").style.opacity=0;setTimeout(()=>{$("cap").textContent=g.syn;$("cap").style.opacity=1},500);
+  setTimeout(()=>{const ov=old.querySelector("video");if(ov)ov.pause()},2000);setTimeout(nextShot,6500)};
+ if(it.t==="vid"){im.style.display="none";v.style.display="";v.onloadedmetadata=()=>{v.currentTime=Math.random()*Math.max(0,(it.d||0)-8);v.play().then(go).catch(go)};v.src=it.s}
+ else{v.style.display="none";im.style.display="";im.onload=go;im.src=it.s}
+}
+setInterval(()=>{const e=$("tc");if(!e)return;const t=(performance.now()-t0)/1000,p=n=>String(n).padStart(2,"0");
+ e.textContent=`TC ${p(Math.floor(t/3600))}:${p(Math.floor(t/60)%60)}:${p(Math.floor(t)%60)}:${p(Math.floor((t%1)*24))}`},42);
+
+const playIO=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;v.dataset.vis=e.isIntersecting?"1":"";if(!v.src)return;if(e.isIntersecting&&!reduce)v.play().catch(()=>{});else v.pause()}),{threshold:.5});
+const rvIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");rvIO.unobserve(e.target)}}),{threshold:.12,rootMargin:"0px 0px -6% 0px"});
+const lazy=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const v=e.target;v.muted=true;
+ v.onerror=()=>rm(v);
+ v.onloadeddata=()=>{if(v.dataset.vis&&!reduce)v.play().catch(()=>{})};
+ v.preload="metadata";v.src=v.dataset.src;v.load();lazy.unobserve(v)}),{rootMargin:"0px 400px"});
+
+/* a missing file is simply left out, no error tiles */
+let ct=0;
+function rm(el){const f=el.closest(".it");if(f)f.remove();clearTimeout(ct);ct=setTimeout(chk,150)}
+function chk(){if(!GRID)return;$("e0").hidden=!!GRID.querySelector(".it");const n=$("cn");if(n)n.textContent=`${GRID.querySelectorAll("video").length} clips, ${GRID.querySelectorAll("img").length} photos`}
+
+const VF=`<div class="vf"><i></i><i></i><i></i><i></i></div><div class="rec"><b></b>REC</div><div class="mi" id="mi">24 FPS · 2.39:1</div>`;
+function home(){
+ onHome=true;GRID=null;mt=0;CID="";document.body.classList.remove("film");
+ $("app").innerHTML=`<section class="hero"><div class="sl" id="s0"><video muted playsinline></video><img alt=""></div><div class="sl" id="s1"><video muted playsinline></video><img alt=""></div><div class="grade"></div>${VF}
+ <div class="ttlc"><div><h1 class="t1" aria-label="Aman Chhoker">Aman Chhoker</h1><p class="sb">${PROJECT.sub}</p></div></div>
+ <p class="cap" id="cap" aria-live="off"></p><div class="tc" id="tc"></div><div class="cue s">Scroll</div></section>
+ <section class="chs" id="idx"><p class="intro">Six chapters, cut from one long take.</p><div class="frs">${G.map((g,i)=>`<a class="fr rv" href="#${g.id}" style="--am:${g.c};--d:${i%3*.12}s"><div class="md" data-id="${g.id}"></div><div class="mt">${g.vids.length} clips · ${g.pics.length} photos</div><div class="lab"><small>Chapter ${RO[i]}</small><h2>${g.t}</h2><p>${g.syn}</p></div></a>`).join("")}<a class="fr rv" href="#film" style="--am:${FEATURE.c};--d:.36s;background:${FEATURE.poster?`url('${enc(FEATURE.poster)}') center/cover`:'radial-gradient(circle at 30% 20%,#3a1410,#0d0d0d 70%)'}"><div class="mt">1 big video</div><div class="lab"><small>Special</small><h2>${FEATURE.title}</h2><p>${FEATURE.syn}</p></div></a></div></section>
+ <a class="nx ft rv" href="#film" style="--am:${FEATURE.c}"><small>${FEATURE.meta}</small><b>${FEATURE.title}</b></a>
+ <footer class="end"><div class="cr">${G.map((g,i)=>`<p class="rv"><span>Chapter ${RO[i]}</span><b>${g.t}</b></p>`).join("")}</div><b class="big rv">${PROJECT.student}</b><small class="rv">A ${PROJECT.studio} film</small><small class="rv">Designed and built by ${PROJECT.student}</small></footer>`;
+ document.title=PROJECT.title+" — "+PROJECT.sub;paint();if(pool.length)nextShot();
+}
+
+/* the feature page: one big video */
+function feature(){
+ onHome=false;GRID=null;mt=0;CID="film";document.body.classList.add("film");
+ const src=FEATURE.file?enc(FEATURE.file):"";
+ $("app").innerHTML=`<section class="feat" id="feat">
+ <h1 class="t1" aria-label="${FEATURE.title}">${FEATURE.title}</h1><p class="sb">${FEATURE.sub}</p>
+ <div class="pl"><video id="fv" controls playsinline preload="metadata"${FEATURE.poster?` poster="${enc(FEATURE.poster)}"`:""}></video><div class="pb" id="pb" role="button" aria-label="Play"><i></i></div></div>
+ <p class="syn">${FEATURE.syn}</p><p class="meta">${FEATURE.meta}</p>
+ <p id="e1">The big video was not found. Put <b style="display:inline;font:inherit;letter-spacing:0;text-transform:none">${FEATURE.file||"your video"}</b> next to index.html and check the name in FEATURE at the top of the script.<br><a class="fbtn" href="#idx">Back to chapters</a></p>
+ <a class="nx ft" href="#idx"><small>Keep watching</small><b>Chapters</b></a></section>`;
+ const v=$("fv"),pb=$("pb"),box=$("feat");
+ if(!src){box.classList.add("miss")}else{
+  v.onerror=()=>box.classList.add("miss");
+  v.src=src;
+  pb.onclick=()=>{v.play().catch(()=>{})};
+  v.addEventListener("play",()=>pb.classList.add("off"));
+  v.addEventListener("ended",()=>pb.classList.remove("off"));
+ }
+ document.title=PROJECT.title+" — "+FEATURE.title;
+}
+
+const PER=12;
+const pager=(id,pg,tp)=>{const pn=[];for(let p=1;p<=tp;p++)if(p===1||p===tp||Math.abs(p-pg)<=2)pn.push(p);else if(pn[pn.length-1]!=="…")pn.push("…");
+ return `<nav class="pg" aria-label="Pages">${pg>1?`<a href="#${id}/${pg-1}">Previous</a>`:`<span></span>`}<div>${pn.map(p=>p==="…"?`<i>…</i>`:`<a href="#${id}/${p}"${p===pg?' class="on" aria-current="page"':""}>${p}</a>`).join("")}</div>${pg<tp?`<a href="#${id}/${pg+1}">Next</a>`:`<span></span>`}</nav>`};
+function chap(g,i,pg){
+ onHome=false;const all=[],V=g.vids,P=g.pics;let vi=0,pi=0;
+ while(vi<V.length||pi<P.length){if(pi>=P.length||(vi<V.length&&vi/V.length<=pi/P.length))all.push({t:"vid",s:V[vi++]});else all.push({t:"img",s:P[pi++]})}
+ TP=Math.max(1,Math.ceil(all.length/PER));pg=Math.min(Math.max(1,pg||1),TP);PG=pg;CID=g.id;
+ const items=all.slice((pg-1)*PER,pg*PER);
+ const n=G[(i+1)%G.length];
+ document.body.classList.add("film");
+ $("app").innerHTML=`<section class="hero"><div class="md" data-id="${g.id}"></div><div class="grade"></div>${VF}
+ <div class="ttlc"><div><h1 class="t1" aria-label="${g.t}">${g.t}</h1><p class="sb">Chapter ${RO[i]} of ${RO[G.length-1]}</p></div></div>
+ <p class="cap">${g.syn}</p><div class="tc" id="tc"></div><div class="cue" id="cn"></div></section>
+ <p class="sc" id="sc">Reel ${pg} <span>of ${TP}</span></p>
+ <div class="grid" id="grid">${items.map((it,n)=>`<figure class="it rv" style="--d:${(n%4)*.08}s" tabindex="0" data-t="${it.t}" data-s="${enc(it.s)}">${it.t==="vid"?`<video muted loop playsinline preload="none" data-src="${enc(it.s)}#t=0.1"></video>`:`<img loading="lazy" decoding="async" alt="" src="${enc(it.s)}" onerror="rm(this)">`}<figcaption>${it.t==="vid"?"Clip":"Photo"} ${num(it.s)}</figcaption></figure>`).join("")}</div>
+ <p id="e0" hidden>No files from this chapter were found. Put the media next to index.html and check the names listed in the script.</p>
+ ${pager(g.id,pg,TP)}
+ <a class="nx" href="#${n.id}"><small>Next chapter</small><b>${n.t}</b></a>`;
+ GRID=$("grid");chk();paint();$("mi").textContent="Chapter "+RO[i]+" · 2.39:1";
+ document.querySelectorAll("video[data-src]").forEach(v=>{lazy.observe(v);playIO.observe(v)});
+ document.title=PROJECT.title+" — "+g.t;
+}
+
+function render(){
+ tok++;lazy.disconnect();playIO.disconnect();rvIO.disconnect();closeV();
+ const [id,pgs]=location.hash.slice(1).split("/"),i=G.findIndex(g=>g.id===id);
+ document.documentElement.style.setProperty("--am",i>=0?G[i].c:id==="film"?FEATURE.c:"#e9a23b");
+ if(id==="film")feature();
+ else if(i<0){home();if(id==="idx")requestAnimationFrame(()=>$("idx").scrollIntoView())}else chap(G[i],i,+pgs||1);
+ document.querySelectorAll(".rv").forEach(el=>rvIO.observe(el));
+ if(i>=0&&+pgs>1)$("sc").scrollIntoView();else if(id!=="idx")scrollTo(0,0);
+}
+/* the bars close like a shutter, cut to the next scene, then open */
+addEventListener("hashchange",()=>{
+ if(reduce){render();return}
+ const id=location.hash.slice(1).split("/")[0],g=G.find(x=>x.id===id),tt=$("tt");
+ const isF=id==="film",tid=isF?"film":(g?g.id:""),ch=tid!==CID;
+ if(ch){tt.style.setProperty("--am",isF?FEATURE.c:g?g.c:"#e9a23b");
+  tt.innerHTML=isF?`<div><small>${FEATURE.meta}</small><b>${FEATURE.title}</b></div>`:g?`<div><small>Chapter ${RO[G.indexOf(g)]}</small><b>${g.t}</b></div>`:`<div><small>${PROJECT.sub}</small><b>${PROJECT.title}</b></div>`;tt.classList.add("on")}
+ setLB("50vh");setTimeout(()=>{render();setTimeout(()=>{setLB("7vh");tt.classList.remove("on")},ch?900:120)},950);
+});
+$("hr").onclick=e=>{if($("idx")){e.preventDefault();$("idx").scrollIntoView({behavior:reduce?"auto":"smooth"})}};
+
+let FIG=[],cur=0;
+function show(){
+ const f=FIG[cur];if(!f)return;const u=f.dataset.s,vid=f.dataset.t==="vid";
+ $("st").innerHTML=vid?`<video src="${u}" controls autoplay playsinline loop></video>`:`<img src="${u}" alt="">`;
+ $("cap2").textContent=(vid?"Clip ":"Photo ")+num(decodeURIComponent(u))+"  ·  "+(cur+1)+" / "+FIG.length;
+ $("vw").classList.add("on");document.body.classList.add("lock");
+}
+const step=d=>{if(!$("vw").classList.contains("on"))return;cur=(cur+d+FIG.length)%FIG.length;show()};
+function closeV(){$("vw").classList.remove("on");$("st").innerHTML="";document.body.classList.remove("lock");if(window.MUSIC)MUSIC.unduck()}
+document.addEventListener("click",e=>{const t=e.target.closest(".it");if(t&&GRID){FIG=[...GRID.querySelectorAll(".it")];cur=FIG.indexOf(t);show()}});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.classList&&e.target.classList.contains("it"))e.target.click()});
+$("vx").onclick=closeV;$("vp").onclick=()=>step(-1);$("vn").onclick=()=>step(1);
+$("vw").addEventListener("click",e=>{if(e.target.id==="vw")closeV()});
+const pgGo=d=>{if(!GRID||$("vw").classList.contains("on"))return;const p=PG+d;if(p>=1&&p<=TP)location.hash=CID+"/"+p};
+addEventListener("keydown",e=>{if(e.key==="Escape")closeV();if(e.key==="ArrowRight"){step(1);pgGo(1)}if(e.key==="ArrowLeft"){step(-1);pgGo(-1)}});
+let sx=0;$("vw").addEventListener("touchstart",e=>{sx=e.touches[0].clientX},{passive:true});
+$("vw").addEventListener("touchend",e=>{const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>60)step(d<0?1:-1)});
+
+/* scroll: title drifts up, picture dips to black */
+let sk=0;
+addEventListener("scroll",()=>{if(sk)return;sk=requestAnimationFrame(()=>{sk=0;const h=document.querySelector(".hero");if(h)h.style.setProperty("--p",Math.min(1,Math.max(0,scrollY/innerHeight)).toFixed(3))})},{passive:true});
+/* cursor: a lens ring that blooms over frames */
+if(matchMedia("(pointer:fine)").matches&&!reduce){
+ const c=$("cur");let cx=0,cy=0,tx=0,ty=0;
+ addEventListener("mousemove",e=>{tx=e.clientX;ty=e.clientY;c.classList.add("v");const h=e.target.closest&&e.target.closest(".fr,.it");c.classList.toggle("big",!!h);c.textContent=h?(h.classList.contains("fr")?"Enter":"View"):""});
+ document.addEventListener("mouseleave",()=>c.classList.remove("v"));
+ (function f(){cx+=(tx-cx)*.18;cy+=(ty-cy)*.18;c.style.transform=`translate(${cx}px,${cy}px) translate(-50%,-50%)`;requestAnimationFrame(f)})();
+}
+/* ── BACKGROUND MUSIC ── */
+(function(){
+ const KEY="bgAudioStateAC";
+ function pick(){try{localStorage.setItem("__t__","1");localStorage.removeItem("__t__");return localStorage}catch(e){}try{sessionStorage.setItem("__t__","1");sessionStorage.removeItem("__t__");return sessionStorage}catch(e){}return null}
+ const store=pick();
+ const rd=()=>{if(!store)return null;try{const r=store.getItem(KEY);return r?JSON.parse(r):null}catch(e){return null}};
+ const wr=s=>{if(!store)return;try{store.setItem(KEY,JSON.stringify(s))}catch(e){}};
+ const audio=$("bgAudio"),btn=$("playBtn"),icon=$("playIcon"),pl=$("player");
+ if(!audio)return;
+ const label=pl.querySelector(".player-label"),def=label.textContent;
+ let ducked=false,userPaused=false;
+ const ui=p=>{icon.textContent=p?"❚❚":"▶";pl.classList.toggle("playing",p)};
+ const err=t=>{label.textContent=t;label.style.color="#e07b7b"};
+ const nm=()=>audio.getAttribute("src");
+ let retried=false;
+ audio.addEventListener("error",()=>{
+  /* file not beside index.html? try an assets/ folder once before giving up */
+  if(!retried&&!/^assets\//.test(nm())){retried=true;audio.src="assets/"+nm();audio.load();if(!userPaused)audio.play().catch(()=>{});return}
+  const e=audio.error,m={1:"Audio load aborted",2:"Network error loading audio",3:"Audio file can't be decoded",4:"Audio not found: "+nm()};err(e?(m[e.code]||"Audio error"):"Audio error")});
+ audio.addEventListener("canplay",()=>{if(label.style.color){label.textContent=def;label.style.color=""}});
+ audio.addEventListener("play",()=>ui(true));
+ audio.addEventListener("pause",()=>ui(false));
+ btn.addEventListener("click",()=>{ducked=false;
+  if(audio.paused){userPaused=false;if(audio.error||audio.networkState===3)audio.load();
+   audio.play().then(()=>ui(true)).catch(()=>{ui(false);if(label.textContent===def)err("Tap again to allow audio")})}
+  else{userPaused=true;audio.pause();ui(false)}});
+ /* music steps aside while a clip with sound is playing, then comes back */
+ window.MUSIC={
+  duck(){if(!audio.paused){ducked=true;audio.pause()}},
+  unduck(){if(ducked){ducked=false;audio.play().catch(()=>{})}}
+ };
+ document.addEventListener("play",e=>{const v=e.target;if(v&&v.tagName==="VIDEO"&&!v.muted)MUSIC.duck()},true);
+ document.addEventListener("pause",e=>{const v=e.target;if(v&&v.tagName==="VIDEO"&&!v.muted)MUSIC.unduck()},true);
+ document.addEventListener("ended",e=>{const v=e.target;if(v&&v.tagName==="VIDEO"&&!v.muted)MUSIC.unduck()},true);
+ /* autostart: try straight away; if the browser blocks it, start on the very first tap, click or key press */
+ try{const sv=rd();
+  if(sv&&sv.userPaused)userPaused=true;
+  if(sv&&typeof sv.time==="number"){const seek=()=>{if(audio.readyState>=1)audio.currentTime=sv.time;else audio.addEventListener("loadedmetadata",()=>{audio.currentTime=sv.time},{once:true})};seek()}
+ }catch(e){}
+ const start=()=>(userPaused||!audio.paused)?Promise.resolve():audio.play();
+ const evs=["pointerdown","click","keydown","touchstart","touchend"];
+ const clean=()=>evs.forEach(t=>document.removeEventListener(t,unlock,true));
+ function unlock(e){if(pl.contains(e.target))return;if(userPaused){clean();return}start().then(()=>{if(!audio.paused)clean()}).catch(()=>{})}
+ start().catch(()=>{});
+ evs.forEach(t=>document.addEventListener(t,unlock,true));
+ const save=()=>wr({time:audio.currentTime||0,userPaused});
+ setInterval(save,1000);addEventListener("beforeunload",save);
+})();
+
+/* opening: "presents" card, then the widescreen bars part and the title arrives */
+$("ld").innerHTML=`<div><small>${PROJECT.studio} presents</small><b>${PROJECT.title}</b><i></i></div>`;
+render();
+setTimeout(()=>{setLB("7vh");$("ld").classList.add("out");document.body.classList.add("go")},reduce?0:2100);
+</script>
+</body>
+</html>
